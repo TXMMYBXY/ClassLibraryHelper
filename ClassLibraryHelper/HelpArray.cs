@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,8 +23,8 @@ namespace ClassLibraryHelper
             }
             return array;
         }
-
-        public static Array SortArray(Array array, IComparer comparer)
+        
+        public static Array BoubbleSortArray(Array array, IComparer comparer)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -31,12 +32,48 @@ namespace ClassLibraryHelper
                 {
                     if (comparer.Compare(array.GetValue(i), array.GetValue(j)) < 0)
                     {
-                        var temp = array.GetValue(j);
-                        array.SetValue(array.GetValue(i), j);
-                        array.SetValue(temp, i);
+                        Swap(array, i, j);
                     }
                 }
             }
+            return array;
+        }
+
+        public static Array ShakeSortArray(Array array, IComparer comparer)
+        {
+            int right = array.Length - 1;
+            int left = 0;
+
+            while (left <= right)
+            {
+                for(int i = left; i < right; i++)
+                {
+                    if (comparer.Compare(array.GetValue(i), array.GetValue(i + 1)) > 0)
+                    {
+                        array = Swap(array, i, i + 1);
+                    }
+                }
+                right--;
+
+                for(int j = right; j > left; j--)
+                {
+                    if (comparer.Compare(array.GetValue(j), array.GetValue(j - 1)) < 0)
+                    {
+                        array = Swap(array, j, j - 1);
+                    }
+
+                }
+                left++;
+            }
+
+            return array;
+        }
+
+        private static Array Swap(Array array, int i, int j)
+        {
+            var temp = array.GetValue(j);
+            array.SetValue(array.GetValue(i), j);
+            array.SetValue(temp, i);
             return array;
         }
 
