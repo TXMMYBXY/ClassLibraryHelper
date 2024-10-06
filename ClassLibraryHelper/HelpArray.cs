@@ -24,7 +24,7 @@ namespace ClassLibraryHelper
             return array;
         }
         
-        public static Array BoubbleSortArray(Array array, IComparer comparer)
+        public static Array BubbleSortArray(Array array, IComparer comparer)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -65,10 +65,33 @@ namespace ClassLibraryHelper
                 }
                 left++;
             }
+            return array;
+        }
+        public static Array BrushSortArray(Array array, IComparer comparer)
+        {
+            const double ratio = 1.247;
+            int step = array.Length;
+            bool swaped = true;
+
+            while (step > 1 || swaped)
+            {
+                step = (int)(step / ratio);
+                if (step < 1) step = 1;
+                swaped = false;
+
+                for (int i = 0; i + step < array.Length; i++)
+                {
+                    if (comparer.Compare(array.GetValue(i), array.GetValue(i + step)) > 0)
+                    {
+                        array = Swap(array, i, i + step);
+                        swaped = true;
+                    }
+                }
+
+            }
 
             return array;
         }
-
         private static Array Swap(Array array, int i, int j)
         {
             var temp = array.GetValue(j);
